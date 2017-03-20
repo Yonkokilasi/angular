@@ -9,6 +9,7 @@
   "homepage": "https://github.com/ekirira22/angular",
   "private": true,
   "dependencies": {
-    "bootstrap": "^3.3.7"
+    "bootstrap": "^3.3.7",
+    "moment": "^2.18.0"
   }
 }

@@ -1,20 +1,3 @@
-// installations
-// npm install gulp-concat --save-dev
-// npm install vinyl-source-stream --save-dev
-// sudo npm install gulp -g
-// npm install gulp-uglify
-// npm install gulp-util --save-dev
-// npm install del --save-dev
-// npm install jshint --save-dev
-// npm install gulp-jshint --save-dev
-// npm install browser-sync --save-dev
-// required for bower
-// npm install
-// bower install
-// bower install moment --save
-// npm install bower-files --save-dev
-// bower install bootstrap --save
-
 var gulp = require('gulp');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -35,6 +18,8 @@ var lib = require('bower-files')({
     }
 });
 var browserSync = require('browser-sync').create();
+var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
 //var jshint = require('gulp-jshint');
 
 
@@ -45,7 +30,7 @@ gulp.task('myTask', function() {
 
 //This concats the code so that it's short'
 gulp.task('concatInterface', function() {
-    return gulp.src(['./js/*interface.js']) //    array of js files to be concated
+    return gulp.src(['./resources/js/*interface.js']) //    array of js files to be concated
         .pipe(concat('allConcat.js')) //makes a folder called allConcat.js
         .pipe(gulp.dest('./tmp')); // destination is the tmp folder
 });
@@ -67,13 +52,14 @@ gulp.task("minifyscripts", ["jsBrowserify"], function() {
         .pipe(gulp.dest("./build/js"));
 });
 // combines functionality of build,clean,browserify,and serve. Once gulp build is run it will build,clean,bower and serve.
-gulp.task("build", ["clean"], function() {
+gulp.task("build", ["clean",'ts'], function() {
     if (buildProduction) {
         gulp.start('minifyscripts');
     } else {
         gulp.start('jsBuild');
     }
     gulp.start(['Bower', 'serve'])
+    gulp.start('sassBuild');
 });
 gulp.task("clean", function() {
     return del(['build', 'tmp']);
@@ -107,6 +93,8 @@ gulp.task('serve', function() {
     gulp.watch(['js/*.js'], ['jsBuild']); //for live reloading
     gulp.watch(['bower.json'], ['bowerBuild']);
     gulp.watch(['*.html'], ['htmlBuild']);
+    gulp.watch(['resources/styles/*.css', 'resources/styles/*.scss'] ['cssBuild']);
+    gulp.watch(['app/*.ts'], ['tsBuild']);
 });
 gulp.task('jsBuild', ['jsBrowserify'], function() {
     browserSync.reload();
@@ -116,4 +104,25 @@ gulp.task('bowerBuild', ['Bower'], function() {
 });
 gulp.task('htmlBuild', function() {
     browserSync.reload();
+});
+gulp.task('tsBuild', ['ts'], function(){
+  browserSync.reload();
+});
+gulp.task('ts', ['tsClean'], shell.task([
+  'tsc'
+]));
+gulp.task('cssBuild', function() {
+    return gulp.src(['scss/*.scss'])
+        .pipe(sourcemaps.init())
+        .pipe(sass())
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('./build/css'))
+        .pipe(browserSync.stream());
+});
+gulp.task('sassBuild', function() {
+  return gulp.src(['resources/styles/*'])
+    .pipe(sourcemaps.init())
+    .pipe(sass())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./build/css'));
 });
