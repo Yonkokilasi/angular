@@ -6,6 +6,7 @@ var uglify = require('gulp-uglify');
 var utilities = require('gulp-util');
 var buildProduction = utilities.env.production;
 var del = require('del');
+var shell = require('gulp-shell');
 var lib = require('bower-files')({
     "overrides": {
         "bootstrap": {
@@ -107,6 +108,10 @@ gulp.task('htmlBuild', function() {
 });
 gulp.task('tsBuild', ['ts'], function(){
   browserSync.reload();
+});
+// clean task
+gulp.task('tsClean', function(){
+  return del(['app/*.js', 'app/*.js.map']);
 });
 gulp.task('ts', ['tsClean'], shell.task([
   'tsc'
