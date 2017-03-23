@@ -18,7 +18,7 @@ import { Component } from '@angular/core';
       <div>
         <label>Enter Task ID:</label>
         <input [(ngModel)]="selectedTask.id">
-        <button (click)="finishedEditing()">Done</button>
+        <button class="btn btn-success"(click)="finishedEditing()">Done</button>
       </div>
     </div>
   </div>
