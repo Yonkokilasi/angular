@@ -5,10 +5,7 @@ import { Component } from '@angular/core';
   template: `
   <div class="container">
     <h1>My First Angular 2 App</h1>
-<h3>Here are my favorite pies!</h3>
-    <div *ngFor="let currentPie of favoritePies">
-      <h2>{{currentPie}}</h2>
-</div>
+
     <div *ngFor="let currentTask of tasks">
       <h3>{{ currentTask.description }}</h3>
       <button (click)="showDetails(currentTask)">Edit</button>
@@ -30,7 +27,7 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-  favoritePies:string []=["Avocado","chapo","Chapoavocado","Ugali"]
+ 
     tasks: Task[] = [
       new Task("Create To-Do List app.", 0),
       new Task("Learn Kung Fu.", 1),
