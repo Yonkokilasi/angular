@@ -7,9 +7,12 @@ import { Task } from './task.model';
   <div class="container">
     <h1>My First Angular 2 App</h1>
     <pies></pies>
-    <task-list [childTaskList]="masterTaskList" 
-(clickSender)="showDetails($event)"></task-list>
-<edit-task[childSelectedTask]="selectedTask"></edit-task>
+    <task-list
+    [childTaskList]="masterTaskList" 
+    (clickSender)="showDetails($event)"
+></task-list>
+<edit-task [childSelectedTask]="selectedTask"
+></edit-task>
   
   </div>
   `
