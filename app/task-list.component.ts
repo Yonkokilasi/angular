@@ -4,7 +4,7 @@ import { Task } from './task.model';
 @Component({
   selector: 'task-list',
   template: `
-    <div *ngFor="let currentTask of tasks">
+    <div *ngFor="let currentTask of childTaskList">
       <h3>{{ currentTask.description }}</h3>
       <button (click)="editButtonHasBeenClicked(currentTask)">Edit</button>
     </div>
@@ -13,6 +13,9 @@ import { Task } from './task.model';
 
 export class TaskListComponent {
     @Input() childTaskList: Task[];
-    @Output() clickSender = new EventEmmitter();
+    @Output() clickSender = new EventEmitter();
+     editButtonHasBeenClicked(taskToEdit: Task) {
+         this.clickSender.emit(taskToEdit);
+     }
  
 }
